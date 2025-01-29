@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+rp_module_id="lime3ds"
+rp_module_desc="Lime3DS - 3DS emulator (Flatpak)"
+rp_module_help="ROM Extensions: .3ds\n\nAssicurati che Flatpak sia installato e configurato."
+rp_module_licence="GPL https://github.com/lime3ds"
+rp_module_section="exp"
+rp_module_flags=""
+
+function depends_lime3ds() {
+    echo "Verifica dell'installazione di Flatpak..."
+    if ! command -v flatpak &> /dev/null; then
+        echo "Flatpak non è installato. Installazione in corso..."
+        sudo apt update
+        sudo apt install -y flatpak
+        sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    fi
+}
+
+function install_bin_lime3ds() {
+    echo "Installazione di Lime3DS tramite Flatpak..."
+    flatpak install -y flathub io.github.lime3ds.Lime3DS
+}
+
+function configure_lime3ds() {
+    echo "Configurazione Lime3DS in RetroPie..."
+    mkRomDir "3ds"
+
+    addEmulator 0 "$md_id" "3ds" "XINIT-WM:flatpak run io.github.lime3ds.Lime3DS %ROM%"
+    addEmulator 1 "$md_id-guionly" "3ds" "XINIT-WM:flatpak run io.github.lime3ds.Lime3DS"
+    addSystem "3ds"
+
+    # Consenti l'accesso alle ROM
+    flatpak override --user io.github.lime3ds.Lime3DS --filesystem=/home/pi/RetroPie/roms/3ds
+
+    echo "Configurazione completata."
+}
+
+function remove_lime3ds() {
+    echo "Rimozione Lime3DS Flatpak..."
+    flatpak uninstall -y io.github.lime3ds.Lime3DS
+}
