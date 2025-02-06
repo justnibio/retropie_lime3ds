@@ -20,7 +20,7 @@ After that, install the Lime3ds setup script with:
 ```bash
 sudo apt install -y flatpak
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-flatpak install -y flathub app.xemu.xemu
+flatpak install -y flathub io.github.lime3ds.Lime3DS
 ```
 
-Now you can run **RetroPie Setup** script and `xemu` will available under `exp` (experimental) packages section.
+Now you can run **RetroPie Setup** script and `lime3ds` will available under `exp` (experimental) packages section.
